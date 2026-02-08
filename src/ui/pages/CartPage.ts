@@ -2,7 +2,6 @@ import { BasePage } from './BasePage'
 
 export class CartPage extends BasePage {
 
-  // private cartList = '[data-test="cart-list"]'
   private itemName = '[data-test="inventory-item-name"]'
   private itemPrice = '[data-test="inventory-item-price"]'
   private checkoutButton = '[data-test="checkout"]'

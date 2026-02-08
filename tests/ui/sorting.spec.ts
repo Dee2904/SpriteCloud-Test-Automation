@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
-import { LoginPage } from '../../src/pages/LoginPage'
-import { InventoryPage } from '../../src/pages/InventoryPage'
-import { users } from '../../src/data/users'
-import { PAGES } from '../../src/data/pages'
+import { LoginPage } from '../../src/ui/pages/LoginPage'
+import { InventoryPage } from '../../src/ui/pages/InventoryPage'
+import { users } from '../../src/ui/data/users'
+import { PAGES } from '../../src/ui/data/pages'
 
 test('User can sort items by name Z-A', async ({ page }) => {
   const loginPage = new LoginPage(page)

@@ -1,6 +1,6 @@
 import { test } from '@playwright/test'
-import { LoginPage } from '../../src/pages/LoginPage'
-import { users } from '../../src/data/users'
+import { LoginPage } from '../../src/ui/pages/LoginPage'
+import { users } from '../../src/ui/data/users'
 
 test('User cannot log in with invalid password', async ({ page }) => {
   const loginPage = new LoginPage(page)

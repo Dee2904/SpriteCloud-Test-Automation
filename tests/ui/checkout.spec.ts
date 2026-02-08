@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test'
-import { LoginPage } from '../../src/pages/LoginPage'
-import { InventoryPage } from '../../src/pages/InventoryPage'
-import { CartPage } from '../../src/pages/CartPage'
-import { users } from '../../src/data/users'
-import { inventory } from '../../src/data/inventory'
-import { CheckoutInformationPage } from '../../src/pages/CheckoutInformationPage'
-import { CheckoutOverviewPage } from '../../src/pages/CheckoutOverviewPage'
-import { PAGES } from '../../src/data/pages'
+import { LoginPage } from '../../src/ui/pages/LoginPage'
+import { InventoryPage } from '../../src/ui/pages/InventoryPage'
+import { CartPage } from '../../src/ui/pages/CartPage'
+import { users } from '../../src/ui/data/users'
+import { inventory } from '../../src/ui/data/inventory'
+import { CheckoutInformationPage } from '../../src/ui/pages/CheckoutInformationPage'
+import { CheckoutOverviewPage } from '../../src/ui/pages/CheckoutOverviewPage'
+import { PAGES } from '../../src/ui/data/pages'
 
 test('User can checkout with two items and correct prices', async ({ page }) => {
   const loginPage = new LoginPage(page)

@@ -8,11 +8,6 @@ export class CheckoutInformationPage extends BasePage {
   private continueButton = '[data-test="continue"]'
 
 
-//   async assertCheckoutInfoPageLoaded() {
-//   await expect(this.page).toHaveURL(/checkout-step-one\.html/);
-//   await expect(this.page.locator('[data-test="firstName"]')).toBeVisible();
-// }
-
   async fillCustomerInformation(
     firstName: string,
     lastName: string,

@@ -84,12 +84,13 @@ test.describe('Fake Store API', () => {
 
   // 6️⃣ Negative: get non-existing product
   test('Get non-existing product returns error', async () => {
-    const response = await api.getProduct(9999)
-    // the API is letting me get non existing product with id 9999, but it should return 404
-    // expect(response.status()).toBe(404)
-    expect(response.status()).toBe(200)
+  const response = await api.getProduct(9999)
+  console.log('Response status:', response.status())
+  console.log('Response OK:', response.ok())
+  
+  expect(response.status()).toBe(200)
 
-    const bodyText = await response.text()
-    expect(bodyText).toBeFalsy()
-  })
+  const bodyText = await response.text()
+  expect(bodyText).toBeFalsy()
+})
 })

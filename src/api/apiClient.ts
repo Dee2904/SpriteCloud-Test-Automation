@@ -10,9 +10,9 @@ export class ApiClient {
   private async authenticate(): Promise<void> {
     // Performs login to get token and validates successful authentication
     const response = await this.login({ 
-      username: apiUsers.validUser.username, 
-      password: apiUsers.validUser.password 
-    })
+      username: <string>process.env.FAKESTORE_USERNAME, 
+      password: <string>process.env.FAKESTORE_PASSWORD 
+    });
 
     if (!response.ok()) {
       throw new Error(`Authentication failed: ${response.status()}`)

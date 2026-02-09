@@ -18,7 +18,7 @@ test.describe('Fake Store API', () => {
   })
 
   // 1️⃣ Successful login
-test('Successful login returns token', async () => {
+  test('Successful login returns token', async () => {
   const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
   const response = await api.login(randomValidUser)
   
@@ -96,5 +96,6 @@ test('Successful login returns token', async () => {
   console.log('Response body:', text.substring(0, 500))
   
   expect(response.status()).toBe(200)
-  ex
+  expect(text).toBeFalsy()
+})
 })

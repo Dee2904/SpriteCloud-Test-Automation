@@ -1,4 +1,4 @@
-import { APIRequestContext, APIResponse, request } from '@playwright/test'
+import { APIRequestContext, APIResponse, request, chromium } from '@playwright/test'
 import { environment } from '../config/environment'
 import { API_ENDPOINTS } from './data/apiEndpoints'
 
@@ -6,19 +6,34 @@ export class ApiClient {
   private context!: APIRequestContext
 
   async init(): Promise<void> {
-  console.log('FAKESTORE_BASE_URL:', environment.fakeStoreBaseUrl)
-  this.context = await request.newContext({
-    baseURL: environment.fakeStoreBaseUrl,
-    ignoreHTTPSErrors: true,
-    extraHTTPHeaders: {
-      'Content-Type': 'application/json',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'application/json',
-    },
-  })
-  // Add delay to let Cloudflare verify the request
-  await new Promise(resolve => setTimeout(resolve, 2000))
-}
+    console.log('FAKESTORE_BASE_URL:', environment.fakeStoreBaseUrl)
+    
+    // Launch a browser instance to handle Cloudflare challenge
+    const browser = await chromium.launch()
+    const browserContext = await browser.newContext()
+    
+    // Navigate to the base URL to trigger Cloudflare verification
+    const page = await browserContext.newPage()
+    await page.goto(environment.fakeStoreBaseUrl, { waitUntil: 'networkidle' })
+    
+    // Extract cookies from the browser context (Cloudflare sets these)
+    const cookies = await browserContext.cookies()
+    
+    // Create API context with the Cloudflare cookies
+    this.context = await request.newContext({
+      baseURL: environment.fakeStoreBaseUrl,
+      storageState: { cookies, origins: [] },
+      extraHTTPHeaders: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+      },
+    })
+    
+    // Clean up browser
+    await browserContext.close()
+    await browser.close()
+  }
 
   async dispose(): Promise<void> {
     await this.context.dispose()

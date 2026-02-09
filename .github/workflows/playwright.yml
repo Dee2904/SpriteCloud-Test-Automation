@@ -30,6 +30,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Debug environment
+        run: |
+          echo "FAKESTORE_BASE_URL is set: ${{ env.FAKESTORE_BASE_URL }}"
+          echo "FAKESTORE_BASE_URL value: ${FAKESTORE_BASE_URL}"
+
       - name: Run Playwright tests
         run: npx playwright test tests
 

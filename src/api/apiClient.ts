@@ -6,24 +6,19 @@ export class ApiClient {
   private context!: APIRequestContext
 
   async init(): Promise<void> {
-    console.log('FAKESTORE_BASE_URL:', environment.fakeStoreBaseUrl)//debug log to verify the base URL being used
-    this.context = await request.newContext({
-      baseURL: environment.fakeStoreBaseUrl,
-       extraHTTPHeaders: {
+  console.log('FAKESTORE_BASE_URL:', environment.fakeStoreBaseUrl)
+  this.context = await request.newContext({
+    baseURL: environment.fakeStoreBaseUrl,
+    ignoreHTTPSErrors: true,
+    extraHTTPHeaders: {
       'Content-Type': 'application/json',
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       'Accept': 'application/json',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'DNT': '1',
-      'Connection': 'keep-alive',
-      'Upgrade-Insecure-Requests': '1',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-      },
-    })
-  }
+    },
+  })
+  // Add delay to let Cloudflare verify the request
+  await new Promise(resolve => setTimeout(resolve, 2000))
+}
 
   async dispose(): Promise<void> {
     await this.context.dispose()

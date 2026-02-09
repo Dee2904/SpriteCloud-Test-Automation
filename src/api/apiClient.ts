@@ -1,7 +1,7 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test'
 import { environment } from '../config/environment'
 import { API_ENDPOINTS } from './data/apiEndpoints'
-import { apiUsers } from './data/apiUsers'
+// import { apiUsers } from './data/apiUsers'
 
 export class ApiClient {
   private context!: APIRequestContext
@@ -12,7 +12,7 @@ export class ApiClient {
     const response = await this.login({ 
       username: <string>process.env.FAKESTORE_USERNAME, 
       password: <string>process.env.FAKESTORE_PASSWORD 
-    });
+    })
 
     if (!response.ok()) {
       throw new Error(`Authentication failed: ${response.status()}`)
@@ -28,27 +28,23 @@ async init(auth = false): Promise<void> {
     'Content-Type': 'application/json',
   }
 
-  // Create context first
-  this.context = await request.newContext({
-    baseURL: environment.fakeStoreBaseUrl,
-    extraHTTPHeaders: headers,
-  })
-
-  // Then authenticate if needed
-  if (auth) {
-    await this.authenticate()
-    
-    // Update context with auth header
-    await this.context.dispose()
+    // Create context without baseURL - it comes from playwright.config
     this.context = await request.newContext({
-      baseURL: environment.fakeStoreBaseUrl,
-      extraHTTPHeaders: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
-      },
+      extraHTTPHeaders: headers,
     })
+
+    if (auth) {
+      await this.authenticate()
+      
+      await this.context.dispose()
+      this.context = await request.newContext({
+        extraHTTPHeaders: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.token}`
+        },
+      })
+    }
   }
-}
 
   async dispose(): Promise<void> {
     await this.context.dispose()

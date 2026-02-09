@@ -18,15 +18,24 @@ test.describe('Fake Store API', () => {
   })
 
   // 1️⃣ Successful login
+  // test('Successful login returns token', async () => {
+  //   const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
+  //   const response = await api.login(randomValidUser)
+
+  //   expect(response.status()).toBe(201)
+
+  //   const body = await response.json()
+  //   expect(body.token).toBeTruthy()
+  // })
+
   test('Successful login returns token', async () => {
-    const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
-    const response = await api.login(randomValidUser)
+  const response = await api.login(apiUsers.validUser)
 
-    expect(response.status()).toBe(201)
+  expect(response.status()).toBe(201)
 
-    const body = await response.json()
-    expect(body.token).toBeTruthy()
-  })
+  const body = await response.json()
+  expect(body.token).toBeTruthy()
+})
 
   // 2️⃣ Get product and validate content
   test('Get product and validate response', async () => {

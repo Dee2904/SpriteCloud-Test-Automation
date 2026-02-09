@@ -1,29 +1,65 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test'
 import { environment } from '../config/environment'
 import { API_ENDPOINTS } from './data/apiEndpoints'
+import { apiUsers } from './data/apiUsers'
 
 export class ApiClient {
   private context!: APIRequestContext
+  private token: string | null = null
 
-  async init(): Promise<void> {
+  private async authenticate(): Promise<void> {
+    // Performs login to get token and validates successful authentication
+    const response = await this.login({ 
+      username: apiUsers.validUser.username, 
+      password: apiUsers.validUser.password 
+    })
+
+    if (!response.ok()) {
+      throw new Error(`Authentication failed: ${response.status()}`)
+    }
+
+    const body = await response.json()
+    this.token = body.token
+    console.log('Authentication successful, token acquired')
+  }
+
+async init(auth = false): Promise<void> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+
+  // Create context first
+  this.context = await request.newContext({
+    baseURL: environment.fakeStoreBaseUrl,
+    extraHTTPHeaders: headers,
+  })
+
+  // Then authenticate if needed
+  if (auth) {
+    await this.authenticate()
+    
+    // Update context with auth header
+    await this.context.dispose()
     this.context = await request.newContext({
       baseURL: environment.fakeStoreBaseUrl,
       extraHTTPHeaders: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.token}`
       },
     })
   }
+}
 
   async dispose(): Promise<void> {
     await this.context.dispose()
   }
 
-  //AUTH
+  // AUTH
   async login(payload: { username: string; password: string }): Promise<APIResponse> {
     return this.context.post(API_ENDPOINTS.LOGIN, { data: payload })
   }
 
-  //PRODUCTS
+  // PRODUCTS
   async getProduct(productId: number): Promise<APIResponse> {
     return this.context.get(`${API_ENDPOINTS.PRODUCTS}/${productId}`)
   }
@@ -32,7 +68,7 @@ export class ApiClient {
     return this.context.get(API_ENDPOINTS.PRODUCTS)
   }
 
-  //CARTS
+  // CARTS
   async createCart(payload: {
     userId: number
     products: { id: number }[]
@@ -40,7 +76,7 @@ export class ApiClient {
     return this.context.post(API_ENDPOINTS.CARTS, { data: payload })
   }
 
-  //USERS
+  // USERS
   async getAllUsers(): Promise<APIResponse> {
     return this.context.get(API_ENDPOINTS.USERS)
   }

@@ -6,6 +6,7 @@ export class ApiClient {
   private context!: APIRequestContext
 
   async init(): Promise<void> {
+    console.log('FAKESTORE_BASE_URL:', environment.fakeStoreBaseUrl)//debug log to verify the base URL being used
     this.context = await request.newContext({
       baseURL: environment.fakeStoreBaseUrl,
       extraHTTPHeaders: {

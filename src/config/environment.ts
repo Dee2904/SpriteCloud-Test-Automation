@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ override: true })
 
 export const environment = {
   sauceBaseUrl: process.env.SAUCE_BASE_URL || '',

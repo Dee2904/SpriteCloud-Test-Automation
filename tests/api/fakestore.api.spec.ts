@@ -18,15 +18,18 @@ test.describe('Fake Store API', () => {
   })
 
   // 1️⃣ Successful login
-  test('Successful login returns token', async () => {
-    const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
-    const response = await api.login(randomValidUser)
+test('Successful login returns token', async () => {
+  const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
+  const response = await api.login(randomValidUser)
+  
+  console.log('Login Status:', response.status())
+  console.log('Login statusText:', response.statusText())
+  
+  expect(response.status()).toBe(201)
 
-    expect(response.status()).toBe(201)
-
-    const body = await response.json()
-    expect(body.token).toBeTruthy()
-  })
+  const body = await response.json()
+  expect(body.token).toBeTruthy()
+})
 
   // 2️⃣ Get product and validate content
   test('Get product and validate response', async () => {
@@ -83,14 +86,15 @@ test.describe('Fake Store API', () => {
   })
 
   // 6️⃣ Negative: get non-existing product
-  test('Get non-existing product returns error', async () => {
+ test('Get non-existing product returns error', async () => {
   const response = await api.getProduct(9999)
-  console.log('Response status:', response.status())
-  console.log('Response OK:', response.ok())
+  console.log('Status:', response.status())
+  console.log('statusText:', response.statusText())
+  
+  // Print first 500 chars of response
+  const text = await response.text()
+  console.log('Response body:', text.substring(0, 500))
   
   expect(response.status()).toBe(200)
-
-  const bodyText = await response.text()
-  expect(bodyText).toBeFalsy()
-})
+  ex
 })

@@ -16,6 +16,8 @@ jobs:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
       FAKESTORE_BASE_URL: ${{ secrets.FAKESTORE_BASE_URL }}
+      FAKESTORE_USERNAME: ${{ secrets.FAKESTORE_USERNAME }}
+      FAKESTORE_PASSWORD: ${{ secrets.FAKESTORE_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4

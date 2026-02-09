@@ -1,5 +1,4 @@
 import { Page, expect } from '@playwright/test'
-import { environment } from '../../config/environment'
 
 export class LoginPage {
   private page: Page
@@ -14,9 +13,9 @@ export class LoginPage {
   }
 
   async navigateToLoginPage() {
-    await this.page.goto(environment.sauceBaseUrl)
-    await expect(this.page.locator(this.loginButton)).toBeVisible()
-  }
+  await this.page.goto('/')
+  await expect(this.page.locator(this.loginButton)).toBeVisible()
+}
 
   async login(username: string, password: string) {
 

@@ -20,32 +20,31 @@ The framework follows **real-world QA automation practices** with a clean struct
 ## 📁 Project Structure
 
 ```
-src
-├── ui
-│ ├── pages # Page Object Models
-│ ├── data # UI test data
-│ └── config # UI environment config
-│
-├── api
-│ ├── apiClient.ts # Centralized API client
-│ ├── data # API endpoints & test users
-│ ├── schemas # Ajv JSON schemas
-│ └── utils # Helpers & schema validator
-│
-tests
-├── ui # UI test specs
-└── api # API test specs
-│
-.github
-└── workflows
-└── playwright.yml # CI pipeline
-│
-.env.example # Environment variable template
-playwright.config.ts
-package.json
-README.md
+src/
+├── ui/
+│   ├── pages/              # Page Object Models
+│   ├── data/               # UI test data
+│   └── config/             # UI environment config
+├── api/
+│   ├── apiClient.ts        # Centralized API client
+│   ├── data/               # API endpoints & test users
+│   ├── schemas/            # Ajv JSON schemas
+│   └── utils/              # Helpers & schema validator
+└── config/
+    └── environment.ts      # Environment configuration
 
----
+tests/
+├── ui/                     # UI test specs
+└── api/                    # API test specs
+
+.github/
+└── workflows/
+    └── playwright.yml      # CI pipeline
+
+playwright.config.ts        # Playwright configuration
+package.json
+.env.example                # Environment variables template
+README.md
 ```
 
 ## 🧑‍💻 UI Test Coverage (SauceDemo)
@@ -94,16 +93,30 @@ https://fakestoreapi.com
   - Contract (schema) assertions
 - Known API inconsistencies are documented instead of force-failing tests
 
----
+### API Authentication
+
+API tests use **Bearer token authentication**:
+- Login automatically performed during test initialization with `await api.init(true)`
+- Token stored and reused in `Authorization` header for subsequent requests
+- Credentials sourced from environment variables (`FAKESTORE_USERNAME`, `FAKESTORE_PASSWORD`)
 
 ## 🔐 Environment Configuration
 
-Environment variables are used for flexibility across local and CI runs.
+### Local Development (`.env`)
+Create a `.env` file in the root directory with your credentials:
+```
+SAUCE_USERNAME=your_username
+SAUCE_PASSWORD=your_password
+FAKESTORE_USERNAME=your_username
+FAKESTORE_PASSWORD=your_password
+```
 
-### `.env.example`
+> ⚠️ `.env` is ignored by git and must **never be committed**
 
-> ⚠️ `.env` is ignored by default and must **never be committed**  
-> CI uses **GitHub Secrets** instead.
+### CI/CD (GitHub Secrets)
+CI uses **GitHub Secrets** for secure credential management. No `.env` file is needed on CI.
+
+See `.env.example` for the required environment variables template.
 
 ---
 
@@ -133,19 +146,16 @@ npx playwright test tests/api
 ### 🔁 Continuous Integration (GitHub Actions)
 
 Runs automatically on:
+- `push` to main/master
+- `pull_request` against main/master
 
-- push
-
-- pull_request
-
+Features:
 - Secrets injected securely via GitHub Actions
-
-- Playwright HTML report uploaded as an artifact
+- Playwright HTML report uploaded as artifact
+- All tests run in a single worker for stability
 
 ### 📄 Workflow file
-```bash
-.github/workflows/playwright.yml
-```
+`.github/workflows/playwright.yml`
 
 ## 📊 Test Reports & Debugging
 
@@ -184,14 +194,13 @@ AI tools were used selectively to:
 - Explore optimal Playwright synchronization strategies
 - Validate complex assertion logic (sorting, schemas)
 - Accelerate boilerplate setup (Ajv, helper utilities)
-- Debug CI API test failures to identify root cause (Cloudflare blocking) and implement solution
+- Debug CI API test failures, identify Cloudflare blocking, and implement token-based authentication solution
 
 All final design decisions, structure, and validations
 were reviewed and implemented intentionally.
 
 
 ### 📝 Notes & Known Limitations
--  API tests are skipped in CI environments due to Cloudflare protection on fakestoreapi.com blocking GitHub Actions runner IPs. Tests run successfully locally to validate API contracts and response structures. This is a common scenario where third-party APIs restrict CI/CD access.
 
 - Known API inconsistencies are documented instead of force-failing tests.
 

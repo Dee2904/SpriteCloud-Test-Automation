@@ -1,29 +1,56 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test'
-import { environment } from '../config/environment'
 import { API_ENDPOINTS } from './data/apiEndpoints'
 
 export class ApiClient {
   private context!: APIRequestContext
+  private token: string | null = null
 
-  async init(): Promise<void> {
-    this.context = await request.newContext({
-      baseURL: environment.fakeStoreBaseUrl,
-      extraHTTPHeaders: {
-        'Content-Type': 'application/json',
-      },
+  private async authenticate(): Promise<void> {
+    const response = await this.login({ 
+      username: <string>process.env.FAKESTORE_USERNAME, 
+      password: <string>process.env.FAKESTORE_PASSWORD 
     })
+
+    if (!response.ok()) {
+      throw new Error(`Authentication failed: ${response.status()}`)
+    }
+
+    const body = await response.json()
+    this.token = body.token
+  }
+
+  async init(auth = false): Promise<void> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+
+    this.context = await request.newContext({
+      extraHTTPHeaders: headers,
+    })
+
+    if (auth) {
+      await this.authenticate()
+      
+      await this.context.dispose()
+      this.context = await request.newContext({
+        extraHTTPHeaders: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.token}`
+        },
+      })
+    }
   }
 
   async dispose(): Promise<void> {
     await this.context.dispose()
   }
 
-  //AUTH
+  // AUTH
   async login(payload: { username: string; password: string }): Promise<APIResponse> {
     return this.context.post(API_ENDPOINTS.LOGIN, { data: payload })
   }
 
-  //PRODUCTS
+  // PRODUCTS
   async getProduct(productId: number): Promise<APIResponse> {
     return this.context.get(`${API_ENDPOINTS.PRODUCTS}/${productId}`)
   }
@@ -32,7 +59,7 @@ export class ApiClient {
     return this.context.get(API_ENDPOINTS.PRODUCTS)
   }
 
-  //CARTS
+  // CARTS
   async createCart(payload: {
     userId: number
     products: { id: number }[]
@@ -40,7 +67,7 @@ export class ApiClient {
     return this.context.post(API_ENDPOINTS.CARTS, { data: payload })
   }
 
-  //USERS
+  // USERS
   async getAllUsers(): Promise<APIResponse> {
     return this.context.get(API_ENDPOINTS.USERS)
   }

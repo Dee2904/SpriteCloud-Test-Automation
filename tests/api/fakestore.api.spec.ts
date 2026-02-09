@@ -1,18 +1,15 @@
 import { test, expect } from '@playwright/test'
 import { ApiClient } from '../../src/api/apiClient'
-import { apiUsers } from '../../src/api/data/apiUsers'
 import { productSchema } from '../../src/api/schemas/product.schema'
 import { validateSchema } from '../../src/api/utils/schemaValidator'
 import { ApiHelpers } from '../../src/api/utils/helpers'
 
-// API tests skipped in CI (Cloudflare blocks GitHub Actions IPs)- debugging done with AI assistance
-
-(process.env.CI ? test.describe.skip : test.describe)('Fake Store API', () => {
+test.describe('Fake Store API', () => {
   let api: ApiClient
 
   test.beforeEach(async () => {
     api = new ApiClient()
-    await api.init()
+    await api.init(true)
   })
 
   test.afterEach(async () => {
@@ -22,10 +19,6 @@ import { ApiHelpers } from '../../src/api/utils/helpers'
   test('Successful login returns token', async () => {
     const randomValidUser = await ApiHelpers.getRandomUserCredentials(api)
     const response = await api.login(randomValidUser)
-    
-    console.log('Login Status:', response.status())
-    console.log('Login statusText:', response.statusText())
-    
     expect(response.status()).toBe(201)
 
     const body = await response.json()
@@ -80,11 +73,8 @@ import { ApiHelpers } from '../../src/api/utils/helpers'
 
   test('Get non-existing product returns error', async () => {
     const response = await api.getProduct(9999)
-    console.log('Status:', response.status())
-    console.log('statusText:', response.statusText())
     
     const text = await response.text()
-    console.log('Response body:', text.substring(0, 500))
     
     expect(response.status()).toBe(200)
     expect(text).toBeFalsy()

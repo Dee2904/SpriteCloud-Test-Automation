@@ -19,32 +19,34 @@ The framework follows **real-world QA automation practices** with a clean struct
 
 ## 📁 Project Structure
 
-├── src
-│   ├── ui
-│   │   ├── pages            # Page Object Models
-│   │   ├── data             # UI test data
-│   │   └── config           # UI environment config
-│   │
-│   └── api
-│       ├── apiClient.ts     # Centralized API client
-│       ├── data             # API endpoints & test users
-│       ├── schemas          # Ajv JSON schemas
-│       └── utils            # Helpers & schema validator
+```
+src
+├── ui
+│ ├── pages # Page Object Models
+│ ├── data # UI test data
+│ └── config # UI environment config
 │
-├── tests
-│   ├── ui                   # UI test specs
-│   └── api                  # API test specs
+├── api
+│ ├── apiClient.ts # Centralized API client
+│ ├── data # API endpoints & test users
+│ ├── schemas # Ajv JSON schemas
+│ └── utils # Helpers & schema validator
 │
-├── .github/workflows
-│   └── playwright.yml       # CI pipeline
+tests
+├── ui # UI test specs
+└── api # API test specs
 │
-├── .env.example             # Environment variable template
-├── playwright.config.ts
-├── package.json
-└── README.md
-
+.github
+└── workflows
+└── playwright.yml # CI pipeline
+│
+.env.example # Environment variable template
+playwright.config.ts
+package.json
+README.md
 
 ---
+```
 
 ## 🧑‍💻 UI Test Coverage (SauceDemo)
 
@@ -80,7 +82,7 @@ https://fakestoreapi.com
 - ✅ Create a cart with existing products
 - ✅ Create and delete a user
 - ❌ Invalid login (negative test)
-- ❌ Get non-existing product (API behavior documented)
+- ❌ Get non-existing product (negative test)
 
 ### API Best Practices Used
 

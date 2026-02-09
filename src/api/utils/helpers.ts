@@ -1,3 +1,4 @@
+//Used AI to help design reusable API helper utilities that fetch live data instead of relying on hardcoded IDs
 import { ApiClient } from '../apiClient'
 import { faker } from '@faker-js/faker'
 

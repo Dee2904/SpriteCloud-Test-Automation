@@ -1,6 +1,8 @@
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'
 
+ //Used AI to accelerate setup of Ajv with formats support and error reporting
+ 
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
 

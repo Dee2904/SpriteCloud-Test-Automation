@@ -1,24 +1,24 @@
-🧪 SpriteCloud Test Automation Framework
+# 🧪 Test Automation Framework (UI + API)
 
-This repository contains an end-to-end test automation framework built using Playwright + TypeScript, covering both UI and API testing.
+This repository contains an end-to-end **test automation framework built using Playwright and TypeScript**, covering **UI testing** and **API testing** for two independent applications.
 
-The framework is structured to reflect real-world QA practices, with clear separation of concerns, reusable components, environment handling, and CI integration.
+The framework follows **real-world QA automation practices** with a clean structure, reusable components, environment-based configuration, schema validation, and CI integration.
 
-🚀 Tech Stack
+---
 
-Playwright (UI + API testing)
+## 🚀 Tech Stack
 
-TypeScript
+- **Playwright** (UI + API testing)
+- **TypeScript**
+- **Node.js**
+- **Ajv** – JSON schema validation
+- **GitHub Actions** – CI pipeline
+- **dotenv** – environment configuration
 
-Node.js
+---
 
-Ajv (JSON schema validation for API responses)
+## 📁 Project Structure
 
-GitHub Actions (CI)
-
-dotenv (environment configuration)
-
-📁 Project Structure
 ├── src
 │   ├── ui
 │   │   ├── pages            # Page Object Models
@@ -43,175 +43,168 @@ dotenv (environment configuration)
 ├── package.json
 └── README.md
 
-🧑‍💻 UI Test Coverage (SauceDemo)
 
-Base URL:
+---
+
+## 🧑‍💻 UI Test Coverage (SauceDemo)
+
+**Base URL:**  
 https://www.saucedemo.com
 
-Implemented UI Scenarios
+### Implemented Scenarios
 
-✅ Successful checkout with multiple items
+- ✅ Successful checkout with multiple items
+- ✅ Sorting products by **Name (Z → A)**
+- ❌ Login failure with invalid credentials
+- 🔒 Locked-out user validation
 
-✅ Sorting products by Name (Z → A)
+### UI Design Decisions
 
-❌ Login failure with invalid credentials
+- Page Object Model (POM) for maintainability
+- Shared `BasePage` for common assertions
+- Stable selectors using `data-test`
+- No test dependency between specs
+- Tests run safely in parallel
 
-🔒 Locked-out user validation
+---
 
-Key UI Design Decisions
+## 🌐 API Test Coverage (FakeStore API)
 
-Page Object Model (POM) for maintainability
-
-Shared BasePage for common assertions
-
-Stable selectors using data-test
-
-No test dependencies between specs
-
-Tests run safely in parallel
-
-🌐 API Test Coverage (FakeStore API)
-
-Base URL:
+**Base URL:**  
 https://fakestoreapi.com
 
-Implemented API Scenarios
+### Implemented Scenarios
 
-✅ Successful login and token validation
+- ✅ Successful login and token validation
+- ✅ Get product and validate response schema
+- ✅ Create a cart with existing products
+- ✅ Create and delete a user
+- ❌ Invalid login (negative test)
+- ❌ Get non-existing product (API behavior documented)
 
-✅ Get product and validate response schema
+### API Best Practices Used
 
-✅ Create a cart with existing products
+- Centralized `ApiClient`
+- Schema validation using **Ajv**
+- Randomized test data via helper utilities
+- Clear separation of:
+  - Business assertions
+  - Contract (schema) assertions
+- Known API inconsistencies are documented instead of force-failing tests
 
-✅ Create & delete a user
+---
 
-❌ Invalid login (negative test)
-
-❌ Get non-existing product (API bug documented)
-
-API Best Practices Used
-
-Centralized ApiClient
-
-Schema validation using Ajv
-
-Randomized test data via helper utilities
-
-Clear separation of:
-
-Business assertions
-
-Contract (schema) assertions
-
-Known API issues are explicitly documented in tests
-
-🔐 Environment Configuration
+## 🔐 Environment Configuration
 
 Environment variables are used for flexibility across local and CI runs.
 
-.env.example
-SAUCE_BASE_URL=https://www.saucedemo.com
-SAUCE_USERNAME=standard_user
-SAUCE_PASSWORD=secret_sauce
+### `.env.example`
 
-FAKESTORE_BASE_URL=https://fakestoreapi.com
+> ⚠️ `.env` is ignored by default and must **never be committed**  
+> CI uses **GitHub Secrets** instead.
 
+---
 
-⚠️ .env is ignored by default and must not be committed
-CI uses GitHub Secrets instead.
+## ▶️ Running Tests Locally
 
-▶️ Running Tests Locally
-Install dependencies
+### Install dependencies
+```bash
 npm install
-
-Install Playwright browsers
+```
+### Install Playwright browsers
+```bash
 npx playwright install
-
-Run all tests
+```
+### Run all tests
+```bash
 npx playwright test
-
-Run only UI tests
+```
+### Run only UI tests
+```bash
 npx playwright test tests/ui
-
-Run only API tests
+```
+### Run only API tests
+```bash
 npx playwright test tests/api
+```
 
-Run in headed mode
-npx playwright test --headed
+### 🔁 Continuous Integration (GitHub Actions)
 
-🔁 Continuous Integration (GitHub Actions)
+Runs automatically on:
 
-Tests run automatically on:
+- push
 
-push
+- pull_request
 
-pull_request
+- Secrets injected securely via GitHub Actions
 
-Secrets are injected securely via GitHub Actions
+- Playwright HTML report uploaded as an artifact
 
-Playwright HTML report is uploaded as an artifact
-
-Workflow file:
-
+### 📄 Workflow file
+```bash
 .github/workflows/playwright.yml
+```
 
-📊 Test Reports & Debugging
+## 📊 Test Reports & Debugging
 
-Playwright automatically generates rich execution artifacts to help analyze failures and flaky behaviour.
+Playwright generates rich artifacts for easier debugging and failure analysis.
 
-🧾 HTML Report
+### 🧾 HTML Report
 
-After every test run, Playwright produces an interactive HTML report containing:
+Includes:
 
-Test results by browser
+- Test results by browser
 
-Execution steps
+- Execution steps
 
-Screenshots on failure
+- Screenshots on failure
 
-Videos (if enabled)
+- Videos (if enabled)
 
-Error stack traces
+- Error stack traces
 
-To view the report locally:
-
+### View locally
+```bash
 npx playwright show-report
+```
 
-Screenshots & Videos
+### 📸 Screenshots & Videos
 
-On failure, the framework automatically captures:
+- Automatically captured on failures
 
-Screenshots of the failure state
+- Stored under test-results/
 
-Video recordings of the test run (browser-dependent)
+- Uploaded as CI artifacts
 
-These artifacts are:
+### 🤖 AI Usage Transparency
 
-Stored under test-results/
+AI tools were used selectively to:
+- Explore optimal Playwright synchronization strategies
+- Validate complex assertion logic (sorting, schemas)
+- Accelerate boilerplate setup (Ajv, helper utilities)
 
-Uploaded as CI artifacts in GitHub Actions
+All final design decisions, structure, and validations
+were reviewed and implemented intentionally.
 
-🧠 Design Philosophy
 
-This framework was designed to reflect how automation is built in real QA teams, not just for assessment:
+### 📝 Notes & Known Limitations
+🔍 Assumptions
 
-Deterministic tests
+- Applications under test (UI & API) are publicly accessible and stable.
 
-Clear failure reasons
+- data-test selectors and API contracts remain consistent.
 
-Minimal flakiness
+- UI users share the same demo password as documented.
 
-Readable specs
+- Tests are independent and safe to run in parallel.
 
-Scalable structure
+- API allows test data creation and cleanup without side effects.
 
-📝 Notes & Known API Limitations
+- Known API inconsistencies are documented instead of force-failing tests.
 
-FakeStore API returns 200 for some invalid scenarios (e.g. non-existing products)
+- FakeStore API returns 200 for some invalid scenarios
 
-Such behaviors are documented in tests instead of being force-failed
-
-👤 Author
+### 👤 Author
 
 Deeksha
 Senior QA / Automation Engineer

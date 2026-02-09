@@ -3,7 +3,6 @@ import { BasePage } from './BasePage'
 export class InventoryPage extends BasePage {
 
   private cartBadge = '[data-test="shopping-cart-badge"]'
-  private cartLink = '[data-test="shopping-cart-link"]'
   private sortDropdown = '[data-test="product-sort-container"]'
   private itemNames = '[data-test="inventory-item-name"]'
    private addToCartButton = (itemId: string) =>
@@ -17,11 +16,7 @@ export class InventoryPage extends BasePage {
     const text = await this.page.locator(this.cartBadge).textContent()
     return Number(text?.trim() || 0)
   }
-
-  async goToCart() {
-    await this.page.click(this.cartLink)
-  }
-
+  
    async sortBy(optionValue: 'az' | 'za' | 'lohi' | 'hilo') {
     await this.page.selectOption(this.sortDropdown, optionValue)
   }

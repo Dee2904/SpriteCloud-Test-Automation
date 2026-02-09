@@ -26,6 +26,7 @@ test('User can sort items by name Z-A', async ({ page }) => {
     await test.step('Items are sorted correctly', async () => {
     const itemNames = await inventoryPage.getItemNames()
 
+    // Used AI to validate the correct approach for locale-aware string sorting
   const expectedSortedNames = [...itemNames].sort((a, b) =>
     b.localeCompare(a)
   )

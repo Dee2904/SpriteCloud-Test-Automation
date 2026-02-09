@@ -37,7 +37,7 @@ test('User can checkout with two items and correct prices', async ({ page }) => 
 })
 
   await test.step('User navigates to cart', async () => {
-  await page.locator('[data-test="shopping-cart-link"]').click(); //PUT this in the base page
+  await inventoryPage.goToCart()
   await cartPage.assertPage(PAGES.CART)
 });
 

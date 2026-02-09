@@ -1,5 +1,4 @@
 import { Page, expect } from '@playwright/test'
-import { environment } from '../../config/environment'
 
 export class LoginPage {
   private page: Page

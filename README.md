@@ -184,14 +184,13 @@ AI tools were used selectively to:
 - Explore optimal Playwright synchronization strategies
 - Validate complex assertion logic (sorting, schemas)
 - Accelerate boilerplate setup (Ajv, helper utilities)
-- Debug CI API test failures to identify root cause (Cloudflare blocking) and implement solution
+- Debug CI API test failures, identify Cloudflare blocking, and implement token-based authentication solution
 
 All final design decisions, structure, and validations
 were reviewed and implemented intentionally.
 
 
 ### 📝 Notes & Known Limitations
--  API tests are skipped in CI environments due to Cloudflare protection on fakestoreapi.com blocking GitHub Actions runner IPs. Tests run successfully locally to validate API contracts and response structures. This is a common scenario where third-party APIs restrict CI/CD access.
 
 - Known API inconsistencies are documented instead of force-failing tests.
 

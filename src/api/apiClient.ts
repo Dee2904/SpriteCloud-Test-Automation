@@ -1,14 +1,11 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test'
-import { environment } from '../config/environment'
 import { API_ENDPOINTS } from './data/apiEndpoints'
-// import { apiUsers } from './data/apiUsers'
 
 export class ApiClient {
   private context!: APIRequestContext
   private token: string | null = null
 
   private async authenticate(): Promise<void> {
-    // Performs login to get token and validates successful authentication
     const response = await this.login({ 
       username: <string>process.env.FAKESTORE_USERNAME, 
       password: <string>process.env.FAKESTORE_PASSWORD 
@@ -20,15 +17,13 @@ export class ApiClient {
 
     const body = await response.json()
     this.token = body.token
-    console.log('Authentication successful, token acquired')
   }
 
-async init(auth = false): Promise<void> {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  }
+  async init(auth = false): Promise<void> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
 
-    // Create context without baseURL - it comes from playwright.config
     this.context = await request.newContext({
       extraHTTPHeaders: headers,
     })

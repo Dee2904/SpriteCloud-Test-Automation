@@ -73,11 +73,8 @@ test.describe('Fake Store API', () => {
 
   test('Get non-existing product returns error', async () => {
     const response = await api.getProduct(9999)
-    console.log('Status:', response.status())
-    console.log('statusText:', response.statusText())
     
     const text = await response.text()
-    console.log('Response body:', text.substring(0, 500))
     
     expect(response.status()).toBe(200)
     expect(text).toBeFalsy()

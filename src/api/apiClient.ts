@@ -6,33 +6,21 @@ export class ApiClient {
   private token!: string
 
   async init(): Promise<void> {
-  this.context = await request.newContext({
-    extraHTTPHeaders: {
-      'Content-Type': 'application/json',
-    },
-  })
-
-  await this.authenticate()
-  
-  await this.context.dispose()
-  this.context = await request.newContext({
-    extraHTTPHeaders: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
+    this.context = await request.newContext({
+      extraHTTPHeaders: {
+        'Content-Type': 'application/json',
       },
     })
 
-    if (auth) {
-      await this.authenticate()
-      
-      await this.context.dispose()
-      this.context = await request.newContext({
-        extraHTTPHeaders: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.token}`
-        },
-      })
-    }
+    await this.authenticate()
+    
+    await this.context.dispose()
+    this.context = await request.newContext({
+      extraHTTPHeaders: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.token}`
+      },
+    })
   }
 
   private async authenticate(): Promise<void> {

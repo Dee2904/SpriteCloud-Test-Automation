@@ -9,7 +9,7 @@ test.describe('Fake Store API', () => {
 
   test.beforeEach(async () => {
     api = new ApiClient()
-    await api.init(true)
+    await api.init()
   })
 
   test.afterEach(async () => {

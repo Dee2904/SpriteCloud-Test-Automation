@@ -71,7 +71,7 @@ test.describe('Fake Store API', () => {
     expect(response.status()).toBe(401)
   })
 
-  //assuming Fakestore only has products 1-20 in their database
+  // Assuming Fakestore only has products 1-20 in their database
   test('Get non-existing product returns error', async () => {
     const response = await api.getProduct(9999)
     

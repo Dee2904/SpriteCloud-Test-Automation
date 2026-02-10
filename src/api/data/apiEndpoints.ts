@@ -3,4 +3,4 @@ export const API_ENDPOINTS = {
   PRODUCTS: '/products',
   CARTS: '/carts',
   USERS: '/users',
-} as const;
+} as const

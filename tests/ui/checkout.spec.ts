@@ -9,7 +9,7 @@ import { CheckoutOverviewPage } from '../../src/ui/pages/CheckoutOverviewPage'
 import { PAGES } from '../../src/ui/data/pages'
 import { CheckoutCompletePage } from '../../src/ui/pages/CheckoutCompletePage'
 
-test('User can checkout with two items and correct prices', async ({ page }) => {
+test('User can checkout with three items and correct prices', async ({ page }) => {
   const loginPage = new LoginPage(page)
   const inventoryPage = new InventoryPage(page)
   const cartPage = new CartPage(page)
@@ -20,6 +20,7 @@ test('User can checkout with two items and correct prices', async ({ page }) => 
   const selectedItems = [
     inventory.backpack,
     inventory.fleeceJacket,
+    inventory.onesie
   ]
 
   await test.step('User logs in', async () => {
@@ -30,7 +31,7 @@ test('User can checkout with two items and correct prices', async ({ page }) => 
     )
   })
 
-  await test.step('User adds two items from inventory', async () => {
+  await test.step('User adds three items from inventory', async () => {
     await inventoryPage.assertPage(PAGES.INVENTORY)
 
     for (const item of selectedItems) {
@@ -78,7 +79,7 @@ test('User can checkout with two items and correct prices', async ({ page }) => 
   })
 
   await test.step('User completes checkout', async () => {
-    await checkoutOverviewPage.assertPage(PAGES.CHECKOUT_COMPLETE)
+    await checkoutCompletePage.assertPage(PAGES.CHECKOUT_COMPLETE)
     await checkoutCompletePage.assertCheckoutComplete()
   })
 

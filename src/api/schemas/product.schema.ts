@@ -1,4 +1,3 @@
-import { format } from "node:path";
 
 export const productSchema = {
   type: 'object',

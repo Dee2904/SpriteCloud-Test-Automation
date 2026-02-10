@@ -16,9 +16,9 @@ export abstract class BasePage {
 
  async assertPage(expected: { title: string; url: RegExp }) {
 
-  await expect(this.page).toHaveURL(expected.url);
+  await expect(this.page).toHaveURL(expected.url)
   await expect(
     this.page.locator('[data-test="title"]')
-  ).toHaveText(expected.title);
+  ).toHaveText(expected.title)
 }
 }

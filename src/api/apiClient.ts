@@ -69,9 +69,9 @@ export class ApiClient {
   }
 
   async createUser(payload: {
-    name: string;
-    email: string;
-    password: string;
+    name: string
+    email: string
+    password: string
   }): Promise<APIResponse> {
     return this.context.post(API_ENDPOINTS.USERS, { data: payload })
   }

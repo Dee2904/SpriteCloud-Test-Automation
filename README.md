@@ -26,7 +26,7 @@ src/
 │   ├── data/               # UI test data
 ├── api/
 │   ├── apiClient.ts        # Centralized API client
-│   ├── data/               # API endpoints & test users
+│   ├── data/               # API endpoints
 │   ├── schemas/            # Ajv JSON schemas
 │   └── utils/              # Helpers & schema validator
 

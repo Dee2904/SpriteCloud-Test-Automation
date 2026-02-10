@@ -33,7 +33,7 @@ export class CheckoutOverviewPage extends BasePage {
     ).toHaveText(`Item total: $${expectedSubtotal.toFixed(2)}`)
   }
 
-  //assuming tax is lways calculated as a fixed percentage of the subtotal
+  //Assuming tax is always calculated as a fixed percentage of the subtotal
   async assertTotalIsCorrect() {
     const prices = await this.getItemPrices()
     const subtotal = prices.reduce((a, b) => a + b, 0)

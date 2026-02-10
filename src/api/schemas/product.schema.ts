@@ -1,8 +1,7 @@
-import { format } from "node:path";
 
 export const productSchema = {
   type: 'object',
-  required: ['id', 'title', 'price', 'category', 'description'], // TODO: check if needed
+  required: ['id', 'title', 'price', 'category', 'description'], // assuming image and rating can be optional
   properties: {
     id: { type: 'number' },
     title: { type: 'string', minLength: 1 },

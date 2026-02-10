@@ -9,7 +9,7 @@ test.describe('Fake Store API', () => {
 
   test.beforeEach(async () => {
     api = new ApiClient()
-    await api.init(true)
+    await api.init()
   })
 
   test.afterEach(async () => {
@@ -71,11 +71,13 @@ test.describe('Fake Store API', () => {
     expect(response.status()).toBe(401)
   })
 
+  // Assuming Fakestore only has products 1-20 in their database
   test('Get non-existing product returns error', async () => {
     const response = await api.getProduct(9999)
     
     const text = await response.text()
     
+    // It should return 404, but API returns 200 with empty body, so we check for empty response text
     expect(response.status()).toBe(200)
     expect(text).toBeFalsy()
   })

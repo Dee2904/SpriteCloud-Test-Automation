@@ -1,9 +1,3 @@
-export type InventoryItem = {
-  id: string;
-  name: string;
-  price: number;
-};
-
 export const inventory = {
   backpack: {
     id: 'sauce-labs-backpack',

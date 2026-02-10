@@ -8,9 +8,9 @@ The framework follows **real-world QA automation practices** with a clean struct
 
 ## 🚀 Tech Stack
 
-- **Playwright** (UI + API testing)
-- **TypeScript**
-- **Node.js**
+- **Playwright** - For both UI and API automation
+- **TypeScript**- For type safety and better code maintainability
+- **Node.js**- Runtime environment
 - **Ajv** – JSON schema validation
 - **GitHub Actions** – CI pipeline
 - **dotenv** – environment configuration
@@ -24,14 +24,11 @@ src/
 ├── ui/
 │   ├── pages/              # Page Object Models
 │   ├── data/               # UI test data
-│   └── config/             # UI environment config
 ├── api/
 │   ├── apiClient.ts        # Centralized API client
-│   ├── data/               # API endpoints & test users
+│   ├── data/               # API endpoints
 │   ├── schemas/            # Ajv JSON schemas
 │   └── utils/              # Helpers & schema validator
-└── config/
-    └── environment.ts      # Environment configuration
 
 tests/
 ├── ui/                     # UI test specs
@@ -61,11 +58,11 @@ https://www.saucedemo.com
 
 ### UI Design Decisions
 
-- Page Object Model (POM) for maintainability
-- Shared `BasePage` for common assertions
-- Stable selectors using `data-test`
-- No test dependency between specs
-- Tests run safely in parallel
+- **Page Object Model (POM)** – Makes tests easier to maintain and update
+- **Shared BasePage** – Common functionality isn't duplicated across pages
+- **Stable selectors** – Using `data-test` attributes instead of brittle CSS classes
+- **Independent tests** – Each test can run alone without affecting others
+- **Parallel execution** – Tests run simultaneously without conflicts
 
 ---
 
@@ -85,20 +82,15 @@ https://fakestoreapi.com
 
 ### API Best Practices Used
 
-- Centralized `ApiClient`
-- Schema validation using **Ajv**
-- Randomized test data via helper utilities
-- Clear separation of:
-  - Business assertions
-  - Contract (schema) assertions
-- Known API inconsistencies are documented instead of force-failing tests
+- **Single API client** – All requests go through one place for consistency
+- **Schema validation** – Using Ajv to catch API contract violations early
+- **Dynamic test data** – Helper utilities fetch real data instead of hardcoded IDs
 
 ### API Authentication
 
-API tests use **Bearer token authentication**:
-- Login automatically performed during test initialization with `await api.init(true)`
-- Token stored and reused in `Authorization` header for subsequent requests
-- Credentials sourced from environment variables (`FAKESTORE_USERNAME`, `FAKESTORE_PASSWORD`)
+- **Auto-login:** Token is obtained once during test setup (via `api.init()`)
+- **Token reuse:** Same token used for all requests in that test
+- **Secure credentials:** Username/password loaded from environment variables, never hardcoded
 
 ## 🔐 Environment Configuration
 
@@ -113,10 +105,11 @@ FAKESTORE_PASSWORD=your_password
 
 > ⚠️ `.env` is ignored by git and must **never be committed**
 
+See `.env.example` for the required environment variables template.
+
 ### CI/CD (GitHub Secrets)
 CI uses **GitHub Secrets** for secure credential management. No `.env` file is needed on CI.
 
-See `.env.example` for the required environment variables template.
 
 ---
 
@@ -190,17 +183,22 @@ npx playwright show-report
 
 ### 🤖 AI Usage Transparency
 
-AI tools were used selectively to:
-- Explore optimal Playwright synchronization strategies
-- Validate complex assertion logic (sorting, schemas)
-- Accelerate boilerplate setup (Ajv, helper utilities)
-- Debug CI API test failures, identify Cloudflare blocking, and implement token-based authentication solution
+**How AI Was Used**
 
-All final design decisions, structure, and validations
+AI assisted with:
+
+- Finding the best Playwright synchronization strategies
+- Double-checking assertion logic for sorting and schema validation
+- Setting up boilerplate code (Ajv, helper utilities)
+- Troubleshooting CI failures and implementing the token authentication solution
+- Structuring and writing the README for clarity and readability
+
+**Note:** All final design decisions, structure, and validations
 were reviewed and implemented intentionally.
 
 
 ### 📝 Notes & Known Limitations
+- **Assumptions Made:** All design and implementation assumptions are documented as inline comments throughout the codebase.
 
 - Known API inconsistencies are documented instead of force-failing tests.
 
@@ -208,5 +206,4 @@ were reviewed and implemented intentionally.
 
 ### 👤 Author
 
-Deeksha
-Senior QA / Automation Engineer
+Deeksha Srivastava

@@ -3,7 +3,25 @@ import { API_ENDPOINTS } from './data/apiEndpoints'
 
 export class ApiClient {
   private context!: APIRequestContext
-  private token: string | null = null
+  private token!: string
+
+  async init(): Promise<void> {
+  this.context = await request.newContext({
+    extraHTTPHeaders: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  await this.authenticate()
+  
+  await this.context.dispose()
+  this.context = await request.newContext({
+    extraHTTPHeaders: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+      },
+    })
+  }
 
   private async authenticate(): Promise<void> {
     const response = await this.login({ 
@@ -17,28 +35,6 @@ export class ApiClient {
 
     const body = await response.json()
     this.token = body.token
-  }
-
-  async init(auth = false): Promise<void> {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
-
-    this.context = await request.newContext({
-      extraHTTPHeaders: headers,
-    })
-
-    if (auth) {
-      await this.authenticate()
-      
-      await this.context.dispose()
-      this.context = await request.newContext({
-        extraHTTPHeaders: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.token}`
-        },
-      })
-    }
   }
 
   async dispose(): Promise<void> {

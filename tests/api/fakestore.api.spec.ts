@@ -9,7 +9,7 @@ test.describe('Fake Store API', () => {
 
   test.beforeEach(async () => {
     api = new ApiClient()
-    await api.init(true)
+    await api.init()
   })
 
   test.afterEach(async () => {
@@ -76,6 +76,7 @@ test.describe('Fake Store API', () => {
     
     const text = await response.text()
     
+    // It should return 404, but API returns 200 with empty body, so we check for empty response text
     expect(response.status()).toBe(200)
     expect(text).toBeFalsy()
   })

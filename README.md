@@ -24,14 +24,11 @@ src/
 ├── ui/
 │   ├── pages/              # Page Object Models
 │   ├── data/               # UI test data
-│   └── config/             # UI environment config
 ├── api/
 │   ├── apiClient.ts        # Centralized API client
 │   ├── data/               # API endpoints & test users
 │   ├── schemas/            # Ajv JSON schemas
 │   └── utils/              # Helpers & schema validator
-└── config/
-    └── environment.ts      # Environment configuration
 
 tests/
 ├── ui/                     # UI test specs
@@ -96,7 +93,7 @@ https://fakestoreapi.com
 ### API Authentication
 
 API tests use **Bearer token authentication**:
-- Login automatically performed during test initialization with `await api.init(true)`
+- Login automatically performed during test initialization with `await api.init()`
 - Token stored and reused in `Authorization` header for subsequent requests
 - Credentials sourced from environment variables (`FAKESTORE_USERNAME`, `FAKESTORE_PASSWORD`)
 
@@ -113,10 +110,11 @@ FAKESTORE_PASSWORD=your_password
 
 > ⚠️ `.env` is ignored by git and must **never be committed**
 
+See `.env.example` for the required environment variables template.
+
 ### CI/CD (GitHub Secrets)
 CI uses **GitHub Secrets** for secure credential management. No `.env` file is needed on CI.
 
-See `.env.example` for the required environment variables template.
 
 ---
 
@@ -209,4 +207,5 @@ were reviewed and implemented intentionally.
 ### 👤 Author
 
 Deeksha
+
 Senior QA / Automation Engineer

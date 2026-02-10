@@ -8,9 +8,4 @@ export const users = {
     username: 'locked_out_user',
     password: process.env.SAUCE_PASSWORD!
   },
-
-  invalidUser: {
-    username: 'standard_user',
-    password: 'wrong_password',
-  },
 }
